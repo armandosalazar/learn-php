@@ -1,3 +1,8 @@
+<style>
+  body {
+    font-family: system-ui;
+  }
+</style>
 <?php
 /**
  * d - día del mes
