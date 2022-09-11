@@ -144,10 +144,10 @@
     if (isset($_GET['showAll'])) {
       $show = $_GET['showAll'];
       if ($show == "on") {
-        $sql = "SELECT * FROM todo ORDER BY status DESC";
+        $sql = "SELECT * FROM todo ORDER BY status DESC, text ASC";
       }
     } else {
-      $sql = "SELECT * FROM todo WHERE status = false";
+      $sql = "SELECT * FROM todo WHERE status = false ORDER BY text ASC";
     }
 
     // $sql = "SELECT * FROM todo WHERE status = false ORDER BY text ASC";
