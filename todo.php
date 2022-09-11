@@ -13,18 +13,21 @@
       margin: 0;
       padding: 0;
     }
+
     body {
       background-color: #D4F1EF;
       color: #166E6A;
+      accent-color: #166E6A;
     }
+
     .todoapp {
       width: 500px;
       margin: 30px auto 0;
       padding: 30px;
-      text-align: center;
+      /*text-align: center;*/
     }
 
-    .todoapp>form {
+    .todoapp > form {
       margin-bottom: 20px;
     }
 
@@ -71,12 +74,18 @@
       font-weight: bold;
       padding: 10px 15px;
     }
+
     input.add {
       background-color: #166E6A;
       color: #fff;
       font-weight: bold;
       padding: 10px 15px;
       font-size: inherit;
+    }
+
+    .disabled {
+      text-decoration: line-through;
+      color: #ccc;
     }
   </style>
 </head>
@@ -92,6 +101,14 @@
       <input type="text" name="text">
     </label>
     <input type="submit" value="Add" class="add">
+  </form>
+  <form action="" id="form-show-all">
+    <label for="">
+      Show All
+    </label>
+    <input type="checkbox" name="showAll" id="" onchange="show(this)"
+      <?php echo isset($_GET['showAll']) ? 'checked' : '' ?>
+    >
   </form>
   <div class="todolist">
     <?php
@@ -123,7 +140,17 @@
       $id = $_GET['delete'];
       $connection->query("DELETE FROM todo WHERE  id = $id");
     }
-    $sql = "SELECT * FROM todo WHERE status = false ORDER BY text ASC";
+    $sql = "";
+    if (isset($_GET['showAll'])) {
+      $show = $_GET['showAll'];
+      if ($show == "on") {
+        $sql = "SELECT * FROM todo ORDER BY status DESC";
+      }
+    } else {
+      $sql = "SELECT * FROM todo WHERE status = false";
+    }
+
+    // $sql = "SELECT * FROM todo WHERE status = false ORDER BY text ASC";
     $result = $connection->query($sql);
     if ($result->num_rows > 0) {
       while ($row = $result->fetch_assoc()) {
@@ -132,9 +159,13 @@
         ?>
         <div class="todo">
           <form action="" id="todo-<?php echo $row['id'] ?>">
-            <label>
+            <label
+              class="<?php echo $row['status'] ? 'disabled' : '' ?>"
+            >
               <input id="<?php echo $row['id'] ?>" type="checkbox" onchange="completed(this)" name="id"
-                     value="<?php echo $row['id']; ?>">
+                     value="<?php echo $row['id']; ?>"
+                <?php if ($row['status'] == 1) echo 'checked disabled' ?>
+              >
               <?php echo $row['text'] ?>
             </label>
           </form>
@@ -157,6 +188,11 @@
     const id = `todo-${evt.id}`;
     console.log(id);
     const form = document.getElementById(id);
+    form.submit();
+  }
+
+  function show(evt) {
+    const form = document.getElementById("form-show-all");
     form.submit();
   }
 </script>
