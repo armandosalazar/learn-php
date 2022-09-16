@@ -22,7 +22,7 @@ class Survey extends DataBase
     $prepare->execute(['option' => $this->optionSelected]);
   }
 
-  public function getVotes()
+  public function getLanguagesAndVotes()
   {
     return $this->connect()->query('SELECT * FROM languages');
   }
