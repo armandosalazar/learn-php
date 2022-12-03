@@ -9,3 +9,8 @@ echo "<br>";
 foreach ($edades as $key => $value) {
     echo $key . " " .$value . "<br>";
 }
+// Otra forma
+$names = ["Luis", "Pedro"];
+for ($i = 0; $i < sizeof($names); $i++) {
+  print $names[$i];
+}
